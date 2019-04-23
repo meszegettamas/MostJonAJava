@@ -3,12 +3,14 @@ package homework;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JRadioButton;
 import javax.swing.border.Border;
 
-public class GUI extends JFrame{
+public class GUI extends JFrame implements Runnable{
 
 	private static final long serialVersionUID = 1L;
 	
@@ -22,22 +24,22 @@ public class GUI extends JFrame{
 	private JButton newGame = new JButton();
 	private JButton leaderBoard = new JButton();
 	private JButton[][] field = new JButton[30][30];
+	private JRadioButton[] difficulities = new JRadioButton[3];
+	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private int sizeoffield;
 	private int mines;
 	private int time;
 	
 	GUI()
 	{
-		setTitle("Minesweeper");
 		engine = new TestEngine();
 		sizeoffield = engine.getSizeofgameboard();
 		mines = engine.getNumberofmines();
 		time = engine.getTime();
-		setSize(sizeoffield*25 + 6,sizeoffield*25 + 79);
-		paintGameBoard();
+		actualboard = 0;
+		setTitle("Minesweeper");
 		setLayout(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
 		setResizable(false);
 	}
 	
@@ -80,6 +82,62 @@ public class GUI extends JFrame{
 				field[x][y] = new JButton();
 				field[x][y].setBounds(x*25, y*25 + 50, 25, 25);
 				add(field[x][y]);
+			}
+		}
+	}
+	
+	void showSettings()
+	{
+		for(int i = 0;i < 3;i++)
+		{
+			difficulities[i] = new JRadioButton();
+			buttonGroup.add(difficulities[i]);
+			if(i == 0)
+			{
+				difficulities[i].setBounds(100, 50, 52, 20);
+				difficulities[i].setText("Easy");
+			}
+			else if(i == 1)
+			{
+				difficulities[i].setBounds(100, 100, 70, 20);
+				difficulities[i].setText("Medium");
+			}
+			else
+			{
+				difficulities[i].setBounds(100, 150, 52, 20);
+				difficulities[i].setText("Hard");
+			}
+			add(difficulities[i]);
+		}
+	}
+
+	@Override
+	public void run() {
+		
+		while(true)
+		{
+			if(actualboard == 0)
+			{
+				showSettings();
+				setSize(sizeoffield*25 + 6,sizeoffield*25 + 79);
+				setVisible(true);
+				actualboard = 2;
+			}
+			else if(actualboard == 1)
+			{
+				paintGameBoard();
+				//System.out.println("drjkpljgfh");
+			}
+			else if(actualboard == 2)
+			{
+				showSettings();
+				setSize(300,300);
+			}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
