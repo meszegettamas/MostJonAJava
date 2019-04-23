@@ -1,8 +1,8 @@
 package homework;
 
-public class TestEngine {
+public class TestEngine implements Runnable{
 
-	private int sizeofgameboard = 30;
+	private int sizeofgameboard = 20;
 	private int numberofmines = 100;
 	private int time = 0;
 
@@ -16,6 +16,12 @@ public class TestEngine {
 
 	public int getNumberofmines() {
 		return numberofmines;
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
