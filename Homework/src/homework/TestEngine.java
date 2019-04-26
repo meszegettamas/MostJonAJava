@@ -1,12 +1,27 @@
 package homework;
 
-public class TestEngine implements Runnable{
+public class TestEngine{
 
-	private int sizeofgameboard = 20;
-	private int numberofmines = 100;
-	private int time = 0;
+	private int sizeofgameboard;
+	private int numberofmines;
+	private int time;
+	GUI gui;
+	
+	TestEngine()
+	{
+		
+	}
+	
+	public void setTime(int time) {
+		this.time = time;
+	}
+
+	public void setGui(GUI gui) {
+		this.gui = gui;
+	}
 
 	public int getTime() {
+		gui.paintGameBoard();
 		return time;
 	}
 
@@ -16,12 +31,6 @@ public class TestEngine implements Runnable{
 
 	public int getNumberofmines() {
 		return numberofmines;
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }

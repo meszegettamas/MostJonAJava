@@ -4,8 +4,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Thread guiThread = new Thread(new GUI());
-		guiThread.start();
+		TestEngine engine = new TestEngine();
+		GUI gui = new GUI();
+		engine.setGui(gui);
+		gui.setEngine(engine);
 	}
 
 }
