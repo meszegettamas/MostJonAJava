@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -54,10 +55,12 @@ public class GUI extends JFrame{
 		this.engine = engine;
 	}
 
+	public void setActualboard(int actualboard) {
+		this.actualboard = actualboard;
+	}
 
-	void paintGameBoard()
+	public void paintGameBoard()
 	{
-
 		mineCounter.setBounds(0, 0, sizeoffield*5 - 1, 50);
 		mineCounter.setOpaque(true);
 		mineCounter.setBackground(Color.WHITE);
@@ -73,17 +76,17 @@ public class GUI extends JFrame{
 		getContentPane().add(gameTime);
 		
 		settings.setBounds(sizeoffield*10, 0, sizeoffield*5 - 1, 50);
-		settings.setText("1");
+		settings.setIcon(new ImageIcon(GUI.class.getResource("/icons/gear.png")));
 		settings.setBackground(Color.CYAN);
 		getContentPane().add(settings);
 		
 		newGame.setBounds(sizeoffield*15, 0, sizeoffield*5 - 1, 50);
-		newGame.setText("2");
+		newGame.setIcon(new ImageIcon(GUI.class.getResource("/icons/smiley.png")));
 		newGame.setBackground(Color.CYAN);
 		getContentPane().add(newGame);
 		
 		leaderBoard.setBounds(sizeoffield*20, 0, sizeoffield*5, 50);
-		leaderBoard.setText("3");
+		leaderBoard.setIcon(new ImageIcon(GUI.class.getResource("/icons/cup.png")));
 		leaderBoard.setBackground(Color.CYAN);
 		getContentPane().add(leaderBoard);
 
@@ -98,9 +101,10 @@ public class GUI extends JFrame{
 		}
 	}
 	
-	void showSettings()
+	public void showSettings()
 	{
 		messages.setBounds(100, 10, 100, 20);
+		messages.setFont(new Font("Times New Roman", Font.BOLD, 14));
 		messages.setText("Choose a level!");
 		getContentPane().add(messages);
 		
@@ -112,6 +116,7 @@ public class GUI extends JFrame{
 			{
 				difficulities[i].setBounds(115, 50, 52, 20);
 				difficulities[i].setText("Easy");
+				difficulities[i].doClick();
 			}
 			else if(i == 1)
 			{
@@ -135,9 +140,9 @@ public class GUI extends JFrame{
 		getContentPane().add(cancelButton);
 	}
 	
-	void readUserName()
+	public void readUserName()
 	{
-		messages.setBounds(20, 10, 240, 20);
+		messages.setBounds(20, 10, 235, 20);
 		messages.setText("Give your name to get to the leaderboard!");
 		getContentPane().add(messages);
 		
@@ -153,9 +158,9 @@ public class GUI extends JFrame{
 		getContentPane().add(cancelButton);
 	}
 	
-	void listResults()
+	public void listResults()
 	{
-		messages.setBounds(20, 10, 530, 30);
+		messages.setBounds(20, 10, 560, 30);
 		messages.setFont(new Font("Times New Roman", Font.BOLD, 20));
 		messages.setText("LEADERBOARD");
 		getContentPane().add(messages);
@@ -201,10 +206,15 @@ public class GUI extends JFrame{
 				}
 			}
 		}
+		
+		okButton.setBounds(260, 400, 80, 30);
+		okButton.setText("OK");
+		getContentPane().add(okButton);
+		
 	}
 
 
-	void paintBoards()
+	public void paintBoards()
 	{
 		if(actualboard == 1)
 		{
@@ -227,20 +237,19 @@ public class GUI extends JFrame{
 		else
 		{
 			listResults();
-			setSize(600,450);
+			setSize(600,480);
 			setVisible(true);
 		}
 	}
 	
-	void actionListeners()
+	public void actionListeners()
 	{
 		settings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().removeAll();
 				repaint();
-				engine.setTime(0);
-				actualboard = 2;
-				paintBoards();
+				engine.setSettings(true);
+				engine.readClickMeaning();
 			}
 		});
 		
@@ -248,11 +257,27 @@ public class GUI extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				getContentPane().removeAll();
 				repaint();
-				actualboard = 1;
-				paintBoards();
+				engine.setOkbutton(true);
+				engine.readClickMeaning();
+			}
+		});
+		
+		newGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getContentPane().removeAll();
+				repaint();
+				engine.setNewgame(true);
+				engine.readClickMeaning();
+			}
+		});
+		
+		leaderBoard.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				getContentPane().removeAll();
+				repaint();
+				engine.setLeaderboard(true);
+				engine.readClickMeaning();
 			}
 		});
 	}
 }
-
- 
