@@ -9,11 +9,34 @@ public class TestEngine{
 	private boolean okbutton;
 	private boolean newgame;
 	private boolean leaderboard;
+	private boolean fieldbutton;
+	private int c_x;
+	private int c_y;
 	private GUI gui;
+	/*
+	 * State jelentése:
+	 * 		0: nincs felfedve.
+	 * 		1: fel van fedve.
+	 * 		2: zászlós.
+	 */
+	private int[][] state = new int[22][22];
+	
+	/*
+	 * Board jelentése:
+	 * 		0-8: szomszédok száma.
+	 * 		9: akna.
+	 */
+	private int[][] board = new int[22][22];
 	
 	TestEngine()
 	{
-		
+		c_x = 0;
+		c_y = 0;
+		reset();
+	}
+
+	public void setFieldbutton(boolean fieldbutton) {
+		this.fieldbutton = fieldbutton;
 	}
 	
 	public void setLeaderboard(boolean leaderboard) {
@@ -41,7 +64,6 @@ public class TestEngine{
 	}
 
 	public int getTime() {
-		gui.paintGameBoard();
 		return time;
 	}
 
@@ -51,6 +73,16 @@ public class TestEngine{
 
 	public int getNumberofmines() {
 		return numberofmines;
+	}
+	
+	public int getState(int x, int y)
+	{
+		return state[x][y];
+	}
+	
+	public int getBoard(int x, int y)
+	{
+		return board[x][y];
 	}
 	
 	public void readClickMeaning()
@@ -72,6 +104,7 @@ public class TestEngine{
 		if(newgame == true)
 		{
 			gui.setActualboard(1);
+			reset();
 			gui.paintBoards();
 			newgame = false;
 		}
@@ -81,6 +114,34 @@ public class TestEngine{
 			gui.setActualboard(4);
 			gui.paintBoards();
 			leaderboard = false;
+		}
+		
+		if(fieldbutton == true)
+		{
+			c_x = gui.getCoordinate_x();
+			c_y = gui.getCoordinate_y();
+			state[c_x][c_y] = 1;
+			gui.updateButtonAppearance(c_x, c_y);
+			fieldbutton = false;
+		}
+	}
+	
+	public void reset()
+	{
+		for(int y = 0;y < 22;y++)
+		{
+			for(int x = 0;x < 22;x++)
+			{
+				state[x][y] = 0;
+				if(y < 9)
+				{
+					board[x][y] = y;
+				}
+				else
+				{
+					board[x][y] = 9;
+				}
+			}
 		}
 	}
 }

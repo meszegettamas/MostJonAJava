@@ -12,16 +12,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class GUI extends JFrame{
+public class GUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
 	private TestEngine engine;
 	private int actualboard = 1;
+	private boolean init_state = true;
 	private JLabel mineCounter = new JLabel("", JLabel.CENTER);
 	private JLabel gameTime = new JLabel("", JLabel.CENTER);
 	private Border mineBorder = BorderFactory.createLineBorder(Color.RED, 1);
@@ -29,7 +31,7 @@ public class GUI extends JFrame{
 	private JButton settings = new JButton();
 	private JButton newGame = new JButton();
 	private JButton leaderBoard = new JButton();
-	private JButton[][] field = new JButton[30][30];
+	private JButton[][] field = new JButton[22][22];
 	private JRadioButton[] difficulities = new JRadioButton[3];
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton okButton = new JButton();
@@ -37,9 +39,13 @@ public class GUI extends JFrame{
 	private JLabel messages = new JLabel("", JLabel.CENTER);
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
-	private int sizeoffield = 26;
+	private int field_size = 10;
 	private int mines = 10;
 	private int time = 0;
+	private int coordinate_x;
+	private int coordinate_y;
+	private int[][] field_state = new int[22][22];
+	private int[][] field_content = new int[22][22];
 	
 	GUI()
 	{
@@ -48,9 +54,18 @@ public class GUI extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		paintBoards();
-		actionListeners();
+		addActionListeners();
+		init_state = false;
 	}
 	
+	public int getCoordinate_x() {
+		return coordinate_x;
+	}
+
+	public int getCoordinate_y() {
+		return coordinate_y;
+	}
+
 	public void setEngine(TestEngine engine) {
 		this.engine = engine;
 	}
@@ -58,45 +73,114 @@ public class GUI extends JFrame{
 	public void setActualboard(int actualboard) {
 		this.actualboard = actualboard;
 	}
+	
+	public void updateButtonAppearance(int x, int y)
+	{
+		field_state[x][y] = engine.getState(x,y);
+		field_content[x][y] = engine.getBoard(x,y);
+		
+		if(field_state[x][y] == 1)
+		{
+			field[x][y].setFont(new Font("Times New Roman", Font.BOLD, 12));
+			switch (field_content[x][y])
+			{
+				case 0: 
+					field[x][y].setBackground(Color.white);
+				break;
+				case 1: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(Color.blue);
+					field[x][y].setText("1");
+				break;
+				case 2: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(Color.green);
+					field[x][y].setText("2");
+				break;
+				case 3: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(Color.orange);
+					field[x][y].setText("3");
+				break;
+				case 4: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(new Color(0,0,128));
+					field[x][y].setText("4");
+				break;
+				case 5: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(new Color(178,34,34));
+					field[x][y].setText("5");
+				break;
+				case 6: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(new Color(72,209,204));
+					field[x][y].setText("6");
+				break;
+				case 7: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(Color.black);
+					field[x][y].setText("7");
+				break;
+				case 8: 
+					field[x][y].setBackground(Color.white);
+					field[x][y].setForeground(Color.darkGray);
+					field[x][y].setText("8");
+				break;
+				default:
+					field[x][y].setBackground(Color.red);
+					field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/mine.png")));
+					JOptionPane.showMessageDialog(null, "You loose!!");
+				break;
+			}
+		}
+	}
 
 	public void paintGameBoard()
 	{
-		mineCounter.setBounds(0, 0, sizeoffield*5 - 1, 50);
+		mineCounter.setBounds(0, 0, field_size*8 - 1, 50);
 		mineCounter.setOpaque(true);
 		mineCounter.setBackground(Color.WHITE);
 		mineCounter.setBorder(mineBorder);
 		mineCounter.setText(Integer.toString(mines));
 		getContentPane().add(mineCounter);
 		
-		gameTime.setBounds(sizeoffield*5, 0, sizeoffield*5 - 1, 50);
+		gameTime.setBounds(field_size*8, 0, field_size*8 - 1, 50);
 		gameTime.setOpaque(true);
 		gameTime.setBackground(Color.WHITE);
 		gameTime.setBorder(timeBorder);
 		gameTime.setText(Integer.toString(time));
 		getContentPane().add(gameTime);
 		
-		settings.setBounds(sizeoffield*10, 0, sizeoffield*5 - 1, 50);
+		settings.setBounds(field_size*16, 0, field_size*8, 50);
 		settings.setIcon(new ImageIcon(GUI.class.getResource("/icons/gear.png")));
 		settings.setBackground(Color.CYAN);
 		getContentPane().add(settings);
 		
-		newGame.setBounds(sizeoffield*15, 0, sizeoffield*5 - 1, 50);
+		newGame.setBounds(field_size*24, 0, field_size*8, 50);
 		newGame.setIcon(new ImageIcon(GUI.class.getResource("/icons/smiley.png")));
 		newGame.setBackground(Color.CYAN);
 		getContentPane().add(newGame);
 		
-		leaderBoard.setBounds(sizeoffield*20, 0, sizeoffield*5, 50);
+		leaderBoard.setBounds(field_size*32, 0, field_size*8, 50);
 		leaderBoard.setIcon(new ImageIcon(GUI.class.getResource("/icons/cup.png")));
 		leaderBoard.setBackground(Color.CYAN);
 		getContentPane().add(leaderBoard);
 
-		for(int y = 0;y < sizeoffield;y++)
+		for(int y = 0;y < field_size;y++)
 		{
-			for(int x = 0;x < sizeoffield;x++)
+			for(int x = 0;x < field_size;x++)
 			{
 				field[x][y] = new JButton();
-				field[x][y].setBounds(x*25, y*25 + 50, 25, 25);
+				field[x][y].setBounds(x*40, y*30 + 50, 40, 30);
+				
+				if(init_state == false)
+				{
+					updateButtonAppearance(x,y);
+				}
+
 				getContentPane().add(field[x][y]);
+				field[x][y].addActionListener(this);
 			}
 		}
 	}
@@ -142,11 +226,11 @@ public class GUI extends JFrame{
 	
 	public void readUserName()
 	{
-		messages.setBounds(20, 10, 235, 20);
-		messages.setText("Give your name to get to the leaderboard!");
+		messages.setBounds(20, 10, 235, 40);
+		messages.setText("<html>You win!<br/>Give your name to get to the leaderboard!</html>");
 		getContentPane().add(messages);
 		
-		readName.setBounds(20, 50, 235, 20);
+		readName.setBounds(20, 60, 235, 20);
 		getContentPane().add(readName);
 		
 		okButton.setBounds(20, 100, 80, 30);
@@ -219,7 +303,7 @@ public class GUI extends JFrame{
 		if(actualboard == 1)
 		{
 			paintGameBoard();
-			setSize(sizeoffield*25 + 6,sizeoffield*25 + 79);
+			setSize(field_size*40 + 6,field_size*30 + 79);
 			setVisible(true);
 		}
 		else if(actualboard == 2)
@@ -242,42 +326,60 @@ public class GUI extends JFrame{
 		}
 	}
 	
-	public void actionListeners()
+	public void addActionListeners()
 	{
-		settings.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				repaint();
-				engine.setSettings(true);
-				engine.readClickMeaning();
-			}
-		});
+		settings.addActionListener(this);
+		newGame.addActionListener(this);
+		leaderBoard.addActionListener(this);
+		okButton.addActionListener(this);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
 		
-		okButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				repaint();
-				engine.setOkbutton(true);
-				engine.readClickMeaning();
+		if(event.getSource().equals(settings))
+		{
+			getContentPane().removeAll();
+			repaint();
+			engine.setSettings(true);
+			engine.readClickMeaning();
+		}
+		else if(event.getSource().equals(newGame))
+		{
+			getContentPane().removeAll();
+			repaint();
+			engine.setNewgame(true);
+			engine.readClickMeaning();
+		}
+		else if(event.getSource().equals(leaderBoard))
+		{
+			getContentPane().removeAll();
+			repaint();
+			engine.setLeaderboard(true);
+			engine.readClickMeaning();
+		}
+		else if(event.getSource().equals(okButton))
+		{
+			getContentPane().removeAll();
+			repaint();
+			engine.setOkbutton(true);
+			engine.readClickMeaning();
+		}
+		else
+		{
+			for(int y = 0;y < field_size;y++)
+			{
+				for(int x = 0;x < field_size;x++)
+				{	
+					if(event.getSource().equals(field[x][y]))
+					{
+						coordinate_x = x;
+						coordinate_y = y;
+						engine.setFieldbutton(true);
+						engine.readClickMeaning();
+					}
+				}
 			}
-		});
-		
-		newGame.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				repaint();
-				engine.setNewgame(true);
-				engine.readClickMeaning();
-			}
-		});
-		
-		leaderBoard.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				getContentPane().removeAll();
-				repaint();
-				engine.setLeaderboard(true);
-				engine.readClickMeaning();
-			}
-		});
+		}
 	}
 }
