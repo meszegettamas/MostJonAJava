@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class TableOfRecords {
+public class TableOfRecords implements java.io.Serializable {
 	
 	//data fields
 	private int numberOfBestRecords;
@@ -18,12 +18,21 @@ public class TableOfRecords {
 		tableOfLatestRecords = new Record[this.numberOfLatestRecords];
 	}
 	
-	TableOfRecords (Record[] bestRecords, Record[] latestRecords) {
-		tableOfBestRecords = bestRecords;
-		tableOfLatestRecords = latestRecords;
+	TableOfRecords (Record[] tableOfBestRecords, Record[] tableOfLatestRecords) {
 		
-		numberOfBestRecords = tableOfBestRecords.length;
-		numberOfLatestRecords = tableOfLatestRecords.length;
+		this.tableOfBestRecords = new Record[tableOfBestRecords.length];
+		this.tableOfLatestRecords = new Record[tableOfLatestRecords.length];
+		
+		for (int i = 0; i < tableOfBestRecords.length; i++) {
+			this.tableOfBestRecords[i] = new Record(tableOfBestRecords[i]);
+		}
+		
+		for (int i = 0; i < tableOfLatestRecords.length; i++) {
+			this.tableOfLatestRecords[i] = new Record(tableOfLatestRecords[i]);
+		}
+		
+		numberOfBestRecords = this.tableOfBestRecords.length;
+		numberOfLatestRecords = this.tableOfLatestRecords.length;
 	}
 	
 	//insert record

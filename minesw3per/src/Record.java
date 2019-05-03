@@ -21,6 +21,13 @@ public class Record {
 		playerName = "";
 	}
 	
+	Record(Record record){
+		this.playerName = record.getPlayerName();
+		this.date = record.getDate();
+		this.timeToWin = record.getTimeToWin();
+		this.difficulty = record.getDifficulty();
+	}
+	
 	
 	public String getPlayerName() {
 		return playerName;
@@ -56,5 +63,7 @@ public class Record {
 	public void setDifficulty(int newDifficulty) {
 		difficulty = newDifficulty;
 		};
+		
+	
 
 }

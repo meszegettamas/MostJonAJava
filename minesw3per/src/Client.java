@@ -5,16 +5,16 @@ import java.io.*;
 
 public class Client {
 	
-	private String serverName;
+	private String serverAdress;
 	private int portNumber;
 	private Socket clientSocket;
 	
 	public String getServerName() {
-			return serverName;
+			return serverAdress;
 			};
 			
-	public void setServerName(String sName) {
-		serverName = sName;
+	public void setServerAdress(String Adress) {
+		this.serverAdress = Adress;
 		};
 		
 	public int getPortNumber() {
@@ -22,17 +22,17 @@ public class Client {
 		};
 			
 	public void setPortNumber(int pNumber) {
-		portNumber = pNumber;
+		this.portNumber = pNumber;
 		};
 	
 	
-	Client (String server, int port) {
+	Client (String Adress, int port) {
 		
-		serverName = server;
-		portNumber = port;
+		this.serverAdress = Adress;
+		this.portNumber = port;
 		
 		try {
-		clientSocket = new Socket(serverName, portNumber);
+		clientSocket = new Socket(serverAdress, portNumber);
 		}
 		catch (IOException e) {
 	         e.printStackTrace();
