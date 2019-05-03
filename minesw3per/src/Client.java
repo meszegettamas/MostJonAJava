@@ -5,6 +5,7 @@ import java.io.*;
 
 public class Client {
 	
+	
 	private String serverAdress;
 	private int portNumber;
 	private Socket clientSocket;
