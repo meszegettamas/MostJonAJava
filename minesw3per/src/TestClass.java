@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.net.Socket;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -57,37 +59,40 @@ public class TestClass {
 		//end data in
 		
 		TableOfRecords table = new TableOfRecords(records,records2);
+//		
+//		Record [] trecords = table.getBestRecords();
+//		Record [] srecords = table.getLatestRecords();
+//		
+//		table.printTable();
 		
-		Record [] trecords = table.getBestRecords();
-		Record [] srecords = table.getLatestRecords();
+		
+
+		
+//		table.insertNewRecord(newRec);
+//		trecords = table.getBestRecords();
+//		srecords = table.getLatestRecords();
+//		table.printTable();	
+
 		
 		
-		for (int i = 0; i < 3; i++) {
-			System.out.print(trecords[i].getPlayerName() + "\t" + trecords[i].getDifficulty() + "\t" + trecords[i].getTimeToWin() + "\t" + trecords[i].getDate() + "\n");
-		}
 		
-		System.out.print("\n");
 		
-		for (int i = 0; i < 3; i++) {
-			System.out.print(srecords[i].getPlayerName() + "\t" + srecords[i].getDifficulty() + "\t" + srecords[i].getTimeToWin() + "\t" + srecords[i].getDate() + "\n");
-		}
+		String serverAdress = "localhost";
+		int portNumber = 6010;
+		int timeOut= 5000;
 		
-		System.out.print("\n");
+		//i guess kette kellene szedni, mert a szerver inicializalasa le sem fut addig, amig meg nincs a kapcsolat. amugy is kulon fognak futni
+		Server server = new Server(portNumber, timeOut);
+			
+		Client client = new Client(serverAdress, portNumber);
 		
-		table.insertNewRecord(newRec);
-		trecords = table.getBestRecords();
-		srecords = table.getLatestRecords();
+		client.setTableOfRecords(records,records2);
+		client.sendTableToServer();
 		
-		for (int i = 0; i < 3; i++) {
-			System.out.print(trecords[i].getPlayerName() + "\t" + trecords[i].getDifficulty() + "\t" + trecords[i].getTimeToWin() + "\t" + trecords[i].getDate() + "\n");
-		}
+		server.printTable();
 		
-		System.out.print("\n");
-		
-		for (int i = 0; i < 3; i++) {
-			System.out.print(srecords[i].getPlayerName() + "\t" + srecords[i].getDifficulty() + "\t" + srecords[i].getTimeToWin() + "\t" + srecords[i].getDate() + "\n");
-		}
-		
+		server.close();
+		client.close();
 		
 		
 	}

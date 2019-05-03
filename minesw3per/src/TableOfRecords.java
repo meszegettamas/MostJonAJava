@@ -35,6 +35,8 @@ public class TableOfRecords implements java.io.Serializable {
 		numberOfLatestRecords = this.tableOfLatestRecords.length;
 	}
 	
+	
+	
 	//insert record
 	private void insertNewBestRecord(Record newRecord) {
 		
@@ -113,5 +115,36 @@ public class TableOfRecords implements java.io.Serializable {
 	public Record[] getLatestRecords() {
 		return this.tableOfLatestRecords;
 	}
+	
+	//print functions
+	public void printBestRecords() {
+		
+		for (int i = 0; i < this.tableOfBestRecords.length; i++) {
+			System.out.print(this.tableOfBestRecords[i].getPlayerName() + "\t" + this.tableOfBestRecords[i].getDifficulty() + "\t" + this.tableOfBestRecords[i].getTimeToWin() + "\t" + this.tableOfBestRecords[i].getDate() + "\n");
+		}
+		
+		System.out.print("\n");		
+		
+	}
+	
+	public void printLatestRecords() {
+		
+		for (int i = 0; i < this.tableOfLatestRecords.length; i++) {
+			System.out.print(this.tableOfLatestRecords[i].getPlayerName() + "\t" + this.tableOfLatestRecords[i].getDifficulty() + "\t" + this.tableOfLatestRecords[i].getTimeToWin() + "\t" + this.tableOfLatestRecords[i].getDate() + "\n");
+		}
+		
+		System.out.print("\n");		
+		
+	}
+	
+	public void printTable() {
+		
+		this.printBestRecords();
+		this.printLatestRecords();
+		
+	}
+	
+	
+	
 	
 }
