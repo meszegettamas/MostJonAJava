@@ -60,11 +60,11 @@ public class Client {
 		try {
 		clientSocket = new Socket(this.serverAdress, this.portNumber);
 		
-//		this.inputStream = clientSocket.getInputStream();
-//		this.objInputStream = new ObjectInputStream(inputStream);
-//		
-//		this.outputStream = clientSocket.getOutputStream();
-//		this.objOutputStream = new ObjectOutputStream(outputStream);
+		this.inputStream = clientSocket.getInputStream();
+		this.objInputStream = new ObjectInputStream(inputStream);
+		
+		this.outputStream = clientSocket.getOutputStream();
+		this.objOutputStream = new ObjectOutputStream(outputStream);
 		}
 		catch (IOException e) {
 	         e.printStackTrace();

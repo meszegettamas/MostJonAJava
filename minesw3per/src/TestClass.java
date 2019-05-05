@@ -79,19 +79,14 @@ public class TestClass {
 		
 		String serverAdress = "localhost";
 		int portNumber = 6010;
-		int timeOut= 5000;
 		
-		//i guess kette kellene szedni, mert a szerver inicializalasa le sem fut addig, amig meg nincs a kapcsolat. amugy is kulon fognak futni
-		Server server = new Server(portNumber, timeOut);
 			
 		Client client = new Client(serverAdress, portNumber);
 		
 		client.setTableOfRecords(records,records2);
 		client.sendTableToServer();
 		
-		server.printTable();
 		
-		server.close();
 		client.close();
 		
 		
