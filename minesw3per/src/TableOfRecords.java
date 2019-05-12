@@ -1,6 +1,6 @@
 import java.util.Date;
 
-public class TableOfRecords {
+public class TableOfRecords implements java.io.Serializable {
 	
 	//data fields
 	private int numberOfBestRecords;
@@ -18,13 +18,24 @@ public class TableOfRecords {
 		tableOfLatestRecords = new Record[this.numberOfLatestRecords];
 	}
 	
-	TableOfRecords (Record[] bestRecords, Record[] latestRecords) {
-		tableOfBestRecords = bestRecords;
-		tableOfLatestRecords = latestRecords;
+	TableOfRecords (Record[] tableOfBestRecords, Record[] tableOfLatestRecords) {
 		
-		numberOfBestRecords = tableOfBestRecords.length;
-		numberOfLatestRecords = tableOfLatestRecords.length;
+		this.tableOfBestRecords = new Record[tableOfBestRecords.length];
+		this.tableOfLatestRecords = new Record[tableOfLatestRecords.length];
+		
+		for (int i = 0; i < tableOfBestRecords.length; i++) {
+			this.tableOfBestRecords[i] = new Record(tableOfBestRecords[i]);
+		}
+		
+		for (int i = 0; i < tableOfLatestRecords.length; i++) {
+			this.tableOfLatestRecords[i] = new Record(tableOfLatestRecords[i]);
+		}
+		
+		numberOfBestRecords = this.tableOfBestRecords.length;
+		numberOfLatestRecords = this.tableOfLatestRecords.length;
 	}
+	
+	
 	
 	//insert record
 	private void insertNewBestRecord(Record newRecord) {
@@ -104,5 +115,36 @@ public class TableOfRecords {
 	public Record[] getLatestRecords() {
 		return this.tableOfLatestRecords;
 	}
+	
+	//print functions
+	public void printBestRecords() {
+		
+		for (int i = 0; i < this.tableOfBestRecords.length; i++) {
+			System.out.print(this.tableOfBestRecords[i].getPlayerName() + "\t" + this.tableOfBestRecords[i].getDifficulty() + "\t" + this.tableOfBestRecords[i].getTimeToWin() + "\t" + this.tableOfBestRecords[i].getDate() + "\n");
+		}
+		
+		System.out.print("\n");		
+		
+	}
+	
+	public void printLatestRecords() {
+		
+		for (int i = 0; i < this.tableOfLatestRecords.length; i++) {
+			System.out.print(this.tableOfLatestRecords[i].getPlayerName() + "\t" + this.tableOfLatestRecords[i].getDifficulty() + "\t" + this.tableOfLatestRecords[i].getTimeToWin() + "\t" + this.tableOfLatestRecords[i].getDate() + "\n");
+		}
+		
+		System.out.print("\n");		
+		
+	}
+	
+	public void printTable() {
+		
+		this.printBestRecords();
+		this.printLatestRecords();
+		
+	}
+	
+	
+	
 	
 }
