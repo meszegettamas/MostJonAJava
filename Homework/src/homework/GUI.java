@@ -5,6 +5,10 @@ import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -39,13 +43,52 @@ public class GUI extends JFrame implements ActionListener{
 	private JLabel messages = new JLabel("", JLabel.CENTER);
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
-	private int field_size = 10;
+	private int field_size = 16;
 	private int mines = 10;
 	private int time = 0;
 	private int coordinate_x;
 	private int coordinate_y;
 	private int[][] field_state = new int[22][22];
 	private int[][] field_content = new int[22][22];
+	private int mouseclick;
+    private MouseListener mouseListener = new MouseAdapter() {
+        public void mouseReleased(MouseEvent mouseEvent) {
+            if (mouseEvent.getModifiers() == InputEvent.BUTTON1_MASK) {
+                //System.out.println("Left button pressed.");
+    			for(int y = 0;y < field_size;y++)
+    			{
+    				for(int x = 0;x < field_size;x++)
+    				{	
+    					if(mouseEvent.getSource().equals(field[x][y]))
+    					{
+    						coordinate_x = x;
+    						coordinate_y = y;
+    						mouseclick = 0;
+    						engine.setFieldbutton(true);
+    						engine.readClickMeaning();
+    					}
+    				}
+    			}
+            }
+            if (mouseEvent.getModifiers() == InputEvent.BUTTON3_MASK) {
+                //System.out.println("Right button pressed.");
+    			for(int y = 0;y < field_size;y++)
+    			{
+    				for(int x = 0;x < field_size;x++)
+    				{	
+    					if(mouseEvent.getSource().equals(field[x][y]))
+    					{
+    						coordinate_x = x;
+    						coordinate_y = y;
+    						mouseclick = 1;
+    						engine.setFieldbutton(true);
+    						engine.readClickMeaning();
+    					}
+    				}
+    			}
+            }
+        }
+    };
 	
 	GUI()
 	{
@@ -74,10 +117,19 @@ public class GUI extends JFrame implements ActionListener{
 		this.actualboard = actualboard;
 	}
 	
+	public int getMouseclick() {
+		return mouseclick;
+	}
+
 	public void updateButtonAppearance(int x, int y)
 	{
 		field_state[x][y] = engine.getState(x,y);
 		field_content[x][y] = engine.getBoard(x,y);
+		
+		if(field_state[x][y] == 0)
+		{
+			field[x][y].setIcon(null);
+		}
 		
 		if(field_state[x][y] == 1)
 		{
@@ -134,6 +186,11 @@ public class GUI extends JFrame implements ActionListener{
 				break;
 			}
 		}
+		
+		if(field_state[x][y] == 2)
+		{
+			field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/flag.png")));
+		}
 	}
 
 	public void paintGameBoard()
@@ -180,7 +237,7 @@ public class GUI extends JFrame implements ActionListener{
 				}
 
 				getContentPane().add(field[x][y]);
-				field[x][y].addActionListener(this);
+				field[x][y].addMouseListener(mouseListener);
 			}
 		}
 	}
@@ -365,21 +422,6 @@ public class GUI extends JFrame implements ActionListener{
 			engine.setOkbutton(true);
 			engine.readClickMeaning();
 		}
-		else
-		{
-			for(int y = 0;y < field_size;y++)
-			{
-				for(int x = 0;x < field_size;x++)
-				{	
-					if(event.getSource().equals(field[x][y]))
-					{
-						coordinate_x = x;
-						coordinate_y = y;
-						engine.setFieldbutton(true);
-						engine.readClickMeaning();
-					}
-				}
-			}
-		}
 	}
+	
 }

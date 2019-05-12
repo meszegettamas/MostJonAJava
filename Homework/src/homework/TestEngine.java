@@ -12,6 +12,7 @@ public class TestEngine{
 	private boolean fieldbutton;
 	private int c_x;
 	private int c_y;
+	private int mousebutton;
 	private GUI gui;
 	/*
 	 * State jelentése:
@@ -120,7 +121,25 @@ public class TestEngine{
 		{
 			c_x = gui.getCoordinate_x();
 			c_y = gui.getCoordinate_y();
-			state[c_x][c_y] = 1;
+			mousebutton = gui.getMouseclick();
+			if(state[c_x][c_y] == 0)
+			{
+				if(mousebutton == 0)
+				{
+					state[c_x][c_y] = 1;
+				}
+				if(mousebutton == 1)
+				{
+					state[c_x][c_y] = 2;
+				}
+			}
+			else if(state[c_x][c_y] == 2)
+			{
+				if(mousebutton == 1)
+				{
+					state[c_x][c_y] = 0;
+				}
+			}
 			gui.updateButtonAppearance(c_x, c_y);
 			fieldbutton = false;
 		}
