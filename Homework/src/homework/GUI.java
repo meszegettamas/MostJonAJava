@@ -45,7 +45,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JTextField readName = new JTextField();
 	private int field_size = 16;
 	private int mines = 10;
-	private int time = 0;
+	private int time;
 	private int coordinate_x;
 	private int coordinate_y;
 	private int[][] field_state = new int[22][22];
