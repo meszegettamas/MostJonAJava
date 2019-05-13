@@ -43,9 +43,10 @@ public class GUI extends JFrame implements ActionListener{
 	private JLabel messages = new JLabel("", JLabel.CENTER);
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
-	private int field_size = 16;
+	private int field_size = 10;
 	private int mines = 10;
 	private int time;
+	private int difficulity;
 	private int coordinate_x;
 	private int coordinate_y;
 	private int[][] field_state = new int[22][22];
@@ -119,6 +120,14 @@ public class GUI extends JFrame implements ActionListener{
 	
 	public int getMouseclick() {
 		return mouseclick;
+	}
+
+	public int getDifficulity() {
+		return difficulity;
+	}
+	
+	public void setField_size(int field_size) {
+		this.field_size = field_size;
 	}
 
 	public void updateButtonAppearance(int x, int y)
@@ -258,6 +267,7 @@ public class GUI extends JFrame implements ActionListener{
 				difficulities[i].setBounds(115, 50, 52, 20);
 				difficulities[i].setText("Easy");
 				difficulities[i].doClick();
+				
 			}
 			else if(i == 1)
 			{
@@ -419,6 +429,16 @@ public class GUI extends JFrame implements ActionListener{
 		{
 			getContentPane().removeAll();
 			repaint();
+			if(actualboard == 2)
+			{
+				for(int i = 0;i < 3;i++)
+				{
+					if(difficulities[i].isSelected() == true)
+					{
+						difficulity = i;
+					}
+				}
+			}
 			engine.setOkbutton(true);
 			engine.readClickMeaning();
 		}
