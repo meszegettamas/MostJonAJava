@@ -1,3 +1,12 @@
 /minesw3per/
 /Server.class
 /Testserver.class
+/Network.class
+/SerialClient.class
+/SerialClient$ReceiverThread.class
+/SerialServer.class
+/SerialServer$ReceiverThread.class
+/Control.class
+/Point.class
+/FileHandleTest.class
+/Client$ReceiverThread.class

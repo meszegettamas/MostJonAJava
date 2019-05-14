@@ -77,17 +77,24 @@ public class TestClass {
 		
 		
 		
-		String serverAdress = "localhost";
-		int portNumber = 6010;
-		
+///		String serverAdress = "localhost";
+//		int portNumber = 6010;
+//		
 			
-		Client client = new Client(serverAdress, portNumber);
+//		Client client = new Client(serverAdress, portNumber);
 		
-		client.setTableOfRecords(records,records2);
-		client.sendTableToServer();
+///		client.setTableOfRecords(records,records2);
+//		client.sendTableToServer();
 		
 		
-		client.close();
+//		client.close();
+		FileHandleTest fhandle = new FileHandleTest();
+//		fhandle.writeTableToFile();
+		fhandle.readTableFromFile();
+//		String directory = System.getProperty("user.home");  
+//		System.out.print(directory);
+//		System.out.println("Working Directory = " + System.getProperty("user.dir"));
+		
 		
 		
 	}

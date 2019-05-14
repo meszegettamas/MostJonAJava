@@ -35,7 +35,22 @@ public class TableOfRecords implements java.io.Serializable {
 		numberOfLatestRecords = this.tableOfLatestRecords.length;
 	}
 	
-	
+	TableOfRecords (String[] tableOfBestRecords, String[] tableOfLatestRecords) {
+		
+		this.tableOfBestRecords = new Record[tableOfBestRecords.length];
+		this.tableOfLatestRecords = new Record[tableOfLatestRecords.length];
+		
+		for (int i = 0; i < tableOfBestRecords.length; i++) {
+			this.tableOfBestRecords[i] = new Record(tableOfBestRecords[i]);
+		}
+		
+		for (int i = 0; i < tableOfLatestRecords.length; i++) {
+			this.tableOfLatestRecords[i] = new Record(tableOfLatestRecords[i]);
+		}
+		
+		numberOfBestRecords = this.tableOfBestRecords.length;
+		numberOfLatestRecords = this.tableOfLatestRecords.length;
+	}
 	
 	//insert record
 	private void insertNewBestRecord(Record newRecord) {
