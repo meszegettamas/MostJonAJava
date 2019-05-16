@@ -1,6 +1,7 @@
 package homework;
 
 import java.util.ArrayList;
+import java.util.*;
 
 public class Engine {
 	
@@ -26,6 +27,10 @@ public class Engine {
 	boolean cancelbutton;
 	int minesRemaining = numberOfMines;
 	private GUI gui;
+	private Record newRecord;
+	int timeToWin;
+	TableOfRecords results;
+
 		
 
 	public Engine(){
@@ -333,6 +338,9 @@ public class Engine {
 					}
 				}
 				zeros.remove(0);
+				if (zeros.isEmpty() == true) {
+					break;
+				}
 		}	
 		}
 	}
@@ -364,6 +372,24 @@ public class Engine {
 			won=true;
 		}
 		}
+	
+	//ezeket hivjuk, mikor a user meg akarja nezni az eredmenyeket
+	public void results (String ip) {
+		Client client = new Client(ip);
+		this.results = client.getResults();	
+	}
+	
+	public void updatedResults (String ip) {
+		Client client = new Client(ip);
+		this.results  = client.getUpdatedResults(this.newRecord);
+//		String Adamnak [][] = this.results.returnTableAsStringArray();		
+	}
+	
+	//fgv, ha a user nyert es megadja az adatait
+	public void win (String name) {
+		Date date = new Date();
+		this.newRecord = new Record(name, date, this.timeToWin, this.level);	
+	}
 	
 	public void reset() {
 		if (reset == true || newgame == true) {
