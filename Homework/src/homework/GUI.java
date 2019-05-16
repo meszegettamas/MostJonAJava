@@ -25,7 +25,7 @@ public class GUI extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 	
-	private TestEngine engine;
+	private Engine engine;
 	private int actualboard = 1;
 	private boolean init_state = true;
 	private JLabel mineCounter = new JLabel("", JLabel.CENTER);
@@ -44,9 +44,9 @@ public class GUI extends JFrame implements ActionListener{
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
 	private int field_size = 10;
-	private int mines = 10;
 	private int time;
-	private int difficulity;
+	private int mines = 10;
+	private int difficulity = 1;
 	private int coordinate_x;
 	private int coordinate_y;
 	private int[][] field_state = new int[22][22];
@@ -54,7 +54,7 @@ public class GUI extends JFrame implements ActionListener{
 	private int mouseclick;
     private MouseListener mouseListener = new MouseAdapter() {
         public void mouseReleased(MouseEvent mouseEvent) {
-            if (mouseEvent.getModifiers() == InputEvent.BUTTON1_MASK) {
+            if (mouseEvent.getButton() == MouseEvent.BUTTON1) {
                 //System.out.println("Left button pressed.");
     			for(int y = 0;y < field_size;y++)
     			{
@@ -70,8 +70,17 @@ public class GUI extends JFrame implements ActionListener{
     					}
     				}
     			}
+    			
+    			if(engine.isLost() == true) {
+    				JOptionPane.showMessageDialog(null, "You loose!!");
+    			}
+    			
+    			if(engine.isWon() == true) {
+    				JOptionPane.showMessageDialog(null, "win");
+    			}
+    				
             }
-            if (mouseEvent.getModifiers() == InputEvent.BUTTON3_MASK) {
+            if (mouseEvent.getButton() == MouseEvent.BUTTON3) {
                 //System.out.println("Right button pressed.");
     			for(int y = 0;y < field_size;y++)
     			{
@@ -86,6 +95,9 @@ public class GUI extends JFrame implements ActionListener{
     						engine.readClickMeaning();
     					}
     				}
+    			}
+    			if(engine.isWon() == true) {
+    				JOptionPane.showMessageDialog(null, "win");
     			}
             }
         }
@@ -110,7 +122,7 @@ public class GUI extends JFrame implements ActionListener{
 		return coordinate_y;
 	}
 
-	public void setEngine(TestEngine engine) {
+	public void setEngine(Engine engine) {
 		this.engine = engine;
 	}
 
@@ -130,19 +142,26 @@ public class GUI extends JFrame implements ActionListener{
 		this.field_size = field_size;
 	}
 
-	public void updateButtonAppearance(int x, int y)
+	public void updateButtonAppearance()
 	{
-		field_state[x][y] = engine.getState(x,y);
-		field_content[x][y] = engine.getBoard(x,y);
+		field_state = engine.getState();
+		field_content = engine.getBoard();
 		
+	for (int y = 0; y < field_size; y++) {
+	for (int x = 0; x < field_size; x++) {
+				
 		if(field_state[x][y] == 0)
 		{
 			field[x][y].setIcon(null);
 		}
 		
-		if(field_state[x][y] == 1)
+		else if(field_state[x][y] == 1)
 		{
 			field[x][y].setFont(new Font("Times New Roman", Font.BOLD, 12));
+			if(engine.isLost() == true)
+			{
+				field[x][y].setIcon(null);
+			}
 			switch (field_content[x][y])
 			{
 				case 0: 
@@ -191,15 +210,19 @@ public class GUI extends JFrame implements ActionListener{
 				default:
 					field[x][y].setBackground(Color.red);
 					field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/mine.png")));
-					JOptionPane.showMessageDialog(null, "You loose!!");
 				break;
 			}
 		}
 		
-		if(field_state[x][y] == 2)
+		else if(field_state[x][y] == 2)
 		{
 			field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/flag.png")));
 		}
+	}
+	}
+	
+	mines = engine.getMinesRemaining();
+	mineCounter.setText(Integer.toString(mines));
 	}
 
 	public void paintGameBoard()
@@ -208,7 +231,27 @@ public class GUI extends JFrame implements ActionListener{
 		mineCounter.setOpaque(true);
 		mineCounter.setBackground(Color.WHITE);
 		mineCounter.setBorder(mineBorder);
-		mineCounter.setText(Integer.toString(mines));
+		if(init_state == true)
+		{
+			if(difficulity == 1)
+			{
+				mines = 10;
+			}
+			else if(difficulity == 2)
+			{
+				mines = 40;
+			}
+			else
+			{
+				mines = 100;
+			}
+			mineCounter.setText(Integer.toString(mines));
+		}
+		else
+		{	
+			mines = engine.getMinesRemaining();
+			mineCounter.setText(Integer.toString(mines));
+		}
 		getContentPane().add(mineCounter);
 		
 		gameTime.setBounds(field_size*8, 0, field_size*8 - 1, 50);
@@ -242,7 +285,7 @@ public class GUI extends JFrame implements ActionListener{
 				
 				if(init_state == false)
 				{
-					updateButtonAppearance(x,y);
+					updateButtonAppearance();
 				}
 
 				getContentPane().add(field[x][y]);
@@ -264,7 +307,7 @@ public class GUI extends JFrame implements ActionListener{
 			buttonGroup.add(difficulities[i]);
 			if(i == 0)
 			{
-				difficulities[i].setBounds(115, 50, 52, 20);
+				difficulities[i].setBounds(115, 50, 55, 20);
 				difficulities[i].setText("Easy");
 				difficulities[i].doClick();
 				
@@ -370,7 +413,7 @@ public class GUI extends JFrame implements ActionListener{
 		if(actualboard == 1)
 		{
 			paintGameBoard();
-			setSize(field_size*40 + 6,field_size*30 + 79);
+			setSize(field_size*40 + 13,field_size*30 + 87);
 			setVisible(true);
 		}
 		else if(actualboard == 2)
@@ -435,12 +478,14 @@ public class GUI extends JFrame implements ActionListener{
 				{
 					if(difficulities[i].isSelected() == true)
 					{
-						difficulity = i;
+						difficulity = i+1;
 					}
 				}
+				init_state = true;
 			}
 			engine.setOkbutton(true);
 			engine.readClickMeaning();
+			init_state = false;
 		}
 	}
 	

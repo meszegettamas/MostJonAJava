@@ -52,7 +52,7 @@ public class FileHandler {
 		    int ch = bufferedInputStream.read();
 		    while(ch != -1) {
 		        //System.out.print((char)ch);
-		    	data = data + Character.toString(ch);
+		    	data = data + Character.toString((char)ch);
 		        ch = bufferedInputStream.read();
 		    }
 		} catch (FileNotFoundException e) {
