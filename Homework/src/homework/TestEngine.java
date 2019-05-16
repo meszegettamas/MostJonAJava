@@ -2,9 +2,9 @@ package homework;
 
 public class TestEngine{
 
-	private int sizeofgameboard;
 	private int numberofmines;
 	private int time;
+	private int level;
 	private boolean settings;
 	private boolean okbutton;
 	private boolean newgame;
@@ -68,10 +68,6 @@ public class TestEngine{
 		return time;
 	}
 
-	public int getSizeofgameboard() {
-		return sizeofgameboard;
-	}
-
 	public int getNumberofmines() {
 		return numberofmines;
 	}
@@ -86,6 +82,12 @@ public class TestEngine{
 		return board[x][y];
 	}
 	
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	
+	
 	public void readClickMeaning()
 	{
 		if(settings == true)
@@ -97,6 +99,23 @@ public class TestEngine{
 		
 		if(okbutton == true)
 		{
+			if(level != gui.getDifficulity())
+			{
+				level = gui.getDifficulity();
+				if(level == 0)
+				{
+					gui.setField_size(10);
+				}
+				else if(level == 1)
+				{
+					gui.setField_size(16);
+				}
+				else
+				{
+					gui.setField_size(22);
+				}
+				reset();
+			}
 			gui.setActualboard(1);
 			gui.paintBoards();
 			okbutton = false;
