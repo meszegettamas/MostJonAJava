@@ -42,7 +42,7 @@ public class MainClient {
 //		System.out.println("enter ip, enter 0 for localhost"); 
 //		String ipAd = scn.nextLine();
 		
-		if (ipAd.equals("0") ) {
+		if (ipAd.equals("152.66.152.97") ) {
 			try {
 			InetAddress ip = InetAddress.getByName("localhost");
 			Client client = new Client(ip, port);

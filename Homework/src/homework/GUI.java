@@ -43,6 +43,7 @@ public class GUI extends JFrame implements ActionListener{
 	private JLabel messages = new JLabel("", JLabel.CENTER);
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
+	private String[][] leaderboard = new String[10][4];
 	private int field_size = 10;
 	private int time;
 	private int mines = 10;
@@ -112,6 +113,28 @@ public class GUI extends JFrame implements ActionListener{
 		paintBoards();
 		addActionListeners();
 		init_state = false;
+		for(int x = 0;x < 10;x++)
+		{
+			for(int y = 0;y < 4;y++)
+			{
+				if(y == 0)
+				{
+					leaderboard[x][y] = "a";
+				}
+				else if(y == 1)
+				{
+					leaderboard[x][y] = "b";
+				}
+				else if(y == 2)
+				{
+					leaderboard[x][y] = "c";
+				}
+				else
+				{
+					leaderboard[x][y] = "d";
+				}
+			}
+		}
 	}
 	
 	public int getCoordinate_x() {
@@ -140,6 +163,10 @@ public class GUI extends JFrame implements ActionListener{
 	
 	public void setField_size(int field_size) {
 		this.field_size = field_size;
+	}
+
+	public void setLeaderboard(String[][] leaderboard) {
+		this.leaderboard = leaderboard;
 	}
 
 	public void updateButtonAppearance()
@@ -381,28 +408,28 @@ public class GUI extends JFrame implements ActionListener{
 				{
 					results[x][y] = new JLabel("", Label.RIGHT);
 					results[x][y].setBounds(40, x*30 + 50, 260, 30);
-					results[x][y].setText("Name");
+					results[x][y].setText(leaderboard[x][y-1]);
 					getContentPane().add(results[x][y]);
 				}
 				else if(y == 2)
 				{
 					results[x][y] = new JLabel("", Label.RIGHT);
 					results[x][y].setBounds(300, x*30 + 50, 50, 30);
-					results[x][y].setText("Time");
+					results[x][y].setText(leaderboard[x][y-1]);
 					getContentPane().add(results[x][y]);
 				}
 				else if(y == 3)
 				{
 					results[x][y] = new JLabel("", Label.RIGHT);
 					results[x][y].setBounds(350, x*30 + 50, 100, 30);
-					results[x][y].setText("Medium");
+					results[x][y].setText(leaderboard[x][y-1]);
 					getContentPane().add(results[x][y]);
 				}
 				else
 				{
 					results[x][y] = new JLabel("", Label.RIGHT);
 					results[x][y].setBounds(450, x*30 + 50, 150, 30);
-					results[x][y].setText("2019.04.24.");
+					results[x][y].setText(leaderboard[x][y-1]);
 					getContentPane().add(results[x][y]);
 				}
 			}

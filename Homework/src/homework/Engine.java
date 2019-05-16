@@ -220,6 +220,8 @@ public class Engine {
 		
 		if(leaderboard == true)
 		{
+			getResults("");
+			gui.setLeaderboard(results.returnTableAsStringArray());
 			gui.setActualboard(4);
 			gui.paintBoards();
 			leaderboard = false;
@@ -380,12 +382,12 @@ public class Engine {
 		}
 	
 	//ezeket hivjuk, mikor a user meg akarja nezni az eredmenyeket
-	public void results (String ip) {
+	public void getResults (String ip) {
 		Client client = new Client(ip);
 		this.results = client.getResults();	
 	}
 	
-	public void updatedResults (String ip) {
+	public void getUpdatedResults (String ip) {
 		Client client = new Client(ip);
 		this.results  = client.getUpdatedResults(this.newRecord);
 //		String Adamnak [][] = this.results.returnTableAsStringArray();		
