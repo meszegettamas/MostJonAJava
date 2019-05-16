@@ -442,6 +442,7 @@ public class GUI extends JFrame implements ActionListener{
 		newGame.addActionListener(this);
 		leaderBoard.addActionListener(this);
 		okButton.addActionListener(this);
+		cancelButton.addActionListener(this);
 	}
 
 	@Override
@@ -486,6 +487,13 @@ public class GUI extends JFrame implements ActionListener{
 			engine.setOkbutton(true);
 			engine.readClickMeaning();
 			init_state = false;
+		}
+		else if(event.getSource().equals(cancelButton))
+		{
+			getContentPane().removeAll();
+			repaint();
+			engine.setCancelbutton(true);
+			engine.readClickMeaning();
 		}
 	}
 	
