@@ -51,7 +51,7 @@ public class MainClient {
 			
 			
 			System.out.print("SecondClient");
-			Client client2 = new Client(ip, port);
+			Client client2 = new Client(ip,port);
 			TableOfRecords table2 = client2.getResults();
 			table2.printBestRecords();
 			
@@ -64,7 +64,7 @@ public class MainClient {
 					InetAddress ip = InetAddress.getByName(ipAd);
 					
 					// ez a harom sor kell
-					Client client = new Client(ip, port);
+					Client client = new Client(ipAd);
 					TableOfRecords table = client.getUpdatedResults(record);
 					table.printBestRecords();
 					
