@@ -22,6 +22,50 @@ public class TableOfRecords implements java.io.Serializable {
 //		tableOfBestRecords = new Record[this.numberOfBestRecords];
 //		tableOfLatestRecords = new Record[this.numberOfLatestRecords];
 //	}
+	TableOfRecords(){
+		Date date = new Date();
+		String name1 = "NocConnection!";
+		String name2 = "MintaBela";
+		int diff = 1;
+		int time = 100;
+		Record record1 = new Record(name1,date,time,diff);
+		Record record2 = new Record(name2,date,time,diff);
+		Record[] records = new Record[8];
+		records[0]=record1
+				;
+		for(int i=1;i<records.length;i++)
+		{
+		records[i]=record2;
+		}
+		
+		this.tableOfBestRecords = new Record[10];
+		this.tableOfLatestRecords = new Record[10];
+		
+		for (int i = 0; i < 10; i++) {
+			if (i < records.length) {
+			this.tableOfBestRecords[i] = new Record(records[i]);
+			}
+			else {
+				this.tableOfBestRecords[i] = new Record();
+			}
+		}
+		
+		for (int i = 0; i < 10; i++) {
+			if (i < records.length) {
+				this.tableOfLatestRecords[i] = new Record(records[i]);
+				}
+				else {
+					this.tableOfLatestRecords[i] = new Record();
+				}
+			
+		}
+		
+		
+		numberOfBestRecords = 10;
+		numberOfLatestRecords = 10;
+		
+		
+	}
 	
 	TableOfRecords (Record[] tableOfBestRecords, Record[] tableOfLatestRecords) {  //define with 10 elements always
 		

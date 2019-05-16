@@ -177,7 +177,7 @@ public class Record implements java.io.Serializable {
 	
 	Record () {
 		timeToWin = 0;
-		playerName = "";
+		playerName = "-";
 		this.date = new Date(0);
 	}
 	

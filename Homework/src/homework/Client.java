@@ -83,6 +83,8 @@ public class Client {
             
         }catch(Exception e){ 
             e.printStackTrace(); 
+            System.out.print("unable to connect");
+            this.results = new TableOfRecords();
         } 	
 		
 		return this.results;
@@ -141,7 +143,9 @@ public class Client {
    //         oos.close();
             
         }catch(Exception e){ 
-            e.printStackTrace(); 
+            e.printStackTrace();
+            System.out.print("unable to connect");
+            this.results = new TableOfRecords();
         } 	
 		
 		return this.results;
