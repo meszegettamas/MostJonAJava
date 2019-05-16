@@ -32,6 +32,11 @@ public class FileHandler {
 			}
 		} catch (IOException e) {
 		    // exception handling
+			System.out.print("file not found, creating one");
+//			PrintWriter writer = new PrintWriter(this.filename);
+//			writer.println("The first line");
+//			writer.println("The second line");
+//			writer.close();
 		}
 		
 		
