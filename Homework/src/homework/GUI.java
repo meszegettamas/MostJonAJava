@@ -29,7 +29,7 @@ public class GUI extends JFrame implements ActionListener{
 	private int actualboard = 1;
 	private boolean init_state = true;
 	private JLabel mineCounter = new JLabel("", JLabel.CENTER);
-	private JLabel gameTime = new JLabel("", JLabel.CENTER);
+	JLabel gameTime = new JLabel("", JLabel.CENTER);
 	private Border mineBorder = BorderFactory.createLineBorder(Color.RED, 1);
 	private Border timeBorder = BorderFactory.createLineBorder(Color.BLUE, 1);
 	private JButton settings = new JButton();
@@ -258,7 +258,14 @@ public class GUI extends JFrame implements ActionListener{
 		gameTime.setOpaque(true);
 		gameTime.setBackground(Color.WHITE);
 		gameTime.setBorder(timeBorder);
-		gameTime.setText(Integer.toString(time));
+		if(init_state == true)
+		{
+			gameTime.setText("0");
+		}
+		else
+		{
+			
+		}
 		getContentPane().add(gameTime);
 		
 		settings.setBounds(field_size*16, 0, field_size*8, 50);

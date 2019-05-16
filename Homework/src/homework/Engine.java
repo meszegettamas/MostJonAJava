@@ -30,7 +30,7 @@ public class Engine {
 	private Record newRecord;
 	int timeToWin;
 	TableOfRecords results;
-
+	Timer timer = new Timer();
 		
 
 	public Engine(){
@@ -39,7 +39,16 @@ public class Engine {
 		createMines();
 		countNeighbours();
 		reset();
-				
+		timer.schedule(new TimerTask() {
+		    @Override
+		    public void run() {
+		    	if(lost == false && won == false)
+		    	{
+			    	timeToWin++;
+			    	gui.gameTime.setText(Integer.toString(timeToWin));
+		    	}
+		    }
+		}, 1000, 1000);	
 	}
 	
 	public void setGui(GUI gui) {
@@ -185,13 +194,10 @@ public class Engine {
 		
 		if(okbutton == true)
 		{
-			if(level != gui.getDifficulity())
-			{
-				newgame = true;
-				level = gui.getDifficulity();
-				level();
-				reset();
-			}
+			newgame = true;
+			level = gui.getDifficulity();
+			level();
+			reset();
 			gui.setActualboard(1);
 			gui.paintBoards();
 			okbutton = false;
@@ -402,6 +408,8 @@ public class Engine {
 			won = false;
 			reset = false;
 			newgame = false;
+			timeToWin = 0;
+			gui.gameTime.setText(Integer.toString(timeToWin));
 		}
 		
 	}
