@@ -23,6 +23,7 @@ public class Engine {
 	boolean newgame;
 	boolean leaderboard;
 	boolean fieldbutton;
+	boolean cancelbutton;
 	int minesRemaining = numberOfMines;
 	private GUI gui;
 		
@@ -56,6 +57,10 @@ public class Engine {
 		this.newgame = newgame;
 	}
 	
+	public void setCancelbutton(boolean cancelbutton) {
+		this.cancelbutton = cancelbutton;
+	}
+
 	public int[][] getBoard() {
 		return board;
 	}
@@ -185,6 +190,13 @@ public class Engine {
 			gui.setActualboard(1);
 			gui.paintBoards();
 			okbutton = false;
+		}
+		
+		if(cancelbutton == true)
+		{
+			gui.setActualboard(1);
+			gui.paintBoards();
+			cancelbutton = false;
 		}
 		
 		if(newgame == true)
