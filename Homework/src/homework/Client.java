@@ -1,10 +1,12 @@
 package homework;
 
 import java.io.*; 
+
 import java.net.*;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Scanner; 
+import java.util.Scanner;
+
 
 public class Client {
 	
@@ -15,6 +17,17 @@ public class Client {
 	public Client(InetAddress ip, int portNumber) {
 		this.ip = ip;
 		this.portNumber = portNumber;
+	}
+	
+	public Client(String ip) {
+		InetAddress ipAddress;
+		try {
+		ipAddress = InetAddress.getByName(ip);
+		}catch(Exception e) {
+			ipAddress = null;
+		}
+		this.ip = ipAddress;
+		this.portNumber = 5015;
 	}
 
 	public TableOfRecords getUpdatedResults(Record newRecord){

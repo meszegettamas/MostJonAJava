@@ -25,6 +25,7 @@ public class Engine {
 	boolean fieldbutton;
 	int minesRemaining = numberOfMines;
 	private GUI gui;
+
 		
 
 	public Engine(){
@@ -321,6 +322,9 @@ public class Engine {
 					}
 				}
 				zeros.remove(0);
+				if (zeros.isEmpty() == true) {
+					break;
+				}
 		}	
 		}
 	}
@@ -352,6 +356,13 @@ public class Engine {
 			won=true;
 		}
 		}
+	
+	public TableOfRecords results (String ip) {
+		Client client = new Client(ip);
+		TableOfRecords table = client.getResults();
+		return table;
+		
+	}
 	
 	public void reset() {
 		if (reset == true || newgame == true) {
