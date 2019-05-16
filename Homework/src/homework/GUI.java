@@ -165,6 +165,10 @@ public class GUI extends JFrame implements ActionListener{
 		this.field_size = field_size;
 	}
 
+	public void setLeaderboard(String[][] leaderboard) {
+		this.leaderboard = leaderboard;
+	}
+
 	public void updateButtonAppearance()
 	{
 		field_state = engine.getState();
