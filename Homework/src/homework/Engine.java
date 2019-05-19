@@ -31,7 +31,16 @@ public class Engine {
 	int timeToWin;
 	TableOfRecords results;
 	Timer timer = new Timer();
-		
+	TimerTask timerTask = new TimerTask() {
+	    @Override
+	    public void run() {
+	    	if(lost == false && won == false)
+	    	{
+		    	timeToWin++;
+		    	gui.gameTime.setText(Integer.toString(timeToWin));
+	    	}
+	    }
+	};	
 
 	public Engine(){
 		board = new int[sizeOfBoardx][sizeOfBoardy];
@@ -39,16 +48,7 @@ public class Engine {
 		createMines();
 		countNeighbours();
 		reset();
-		timer.schedule(new TimerTask() {
-		    @Override
-		    public void run() {
-		    	if(lost == false && won == false)
-		    	{
-			    	timeToWin++;
-			    	gui.gameTime.setText(Integer.toString(timeToWin));
-		    	}
-		    }
-		}, 1000, 1000);	
+		timer.schedule(timerTask, 1000, 1000);	
 	}
 	
 	public void setGui(GUI gui) {
@@ -194,10 +194,33 @@ public class Engine {
 		
 		if(okbutton == true)
 		{
-			newgame = true;
-			level = gui.getDifficulity();
-			level();
-			reset();
+			if(gui.getActualboard() == 2)
+			{
+				newgame = true;
+				level = gui.getDifficulity();
+				level();
+				reset();
+			}
+			if(gui.getActualboard() == 3)
+			{
+				if(gui.isValid_data() == true)
+				{
+					win(gui.getUserName());
+					// Adatok elküldése a szervernek.
+					// gui.getUserIp()-val lehet elkérni az IP címet.
+					newgame = true;
+					level = gui.getDifficulity();
+					level();
+					reset();
+				}
+				else
+				{
+					newgame = true;
+					level = gui.getDifficulity();
+					level();
+					reset();
+				}
+			}
 			gui.setActualboard(1);
 			gui.paintBoards();
 			okbutton = false;
@@ -220,8 +243,8 @@ public class Engine {
 		
 		if(leaderboard == true)
 		{
-			getResults("");
-			gui.setLeaderboard(results.returnTableAsStringArray());
+			//getResults("152.66.152.97");
+			//gui.setLeaderboard(results.returnTableAsStringArray());
 			gui.setActualboard(4);
 			gui.paintBoards();
 			leaderboard = false;
@@ -247,7 +270,7 @@ public class Engine {
 			gui.updateButtonAppearance();
 			wonGame();
 			fieldbutton = false;
-}
+		}
 		
 	}
 	
@@ -412,6 +435,19 @@ public class Engine {
 			newgame = false;
 			timeToWin = 0;
 			gui.gameTime.setText(Integer.toString(timeToWin));
+			timer.cancel();
+			timer = new Timer();
+			timerTask = new TimerTask() {
+			    @Override
+			    public void run() {
+			    	if(lost == false && won == false)
+			    	{
+				    	timeToWin++;
+				    	gui.gameTime.setText(Integer.toString(timeToWin));
+			    	}
+			    }
+			};
+			timer.schedule(timerTask, 1000, 1000);
 		}
 		
 	}

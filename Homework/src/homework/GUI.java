@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -28,6 +27,7 @@ public class GUI extends JFrame implements ActionListener{
 	private Engine engine;
 	private int actualboard = 1;
 	private boolean init_state = true;
+	private boolean valid_data = true;
 	private JLabel mineCounter = new JLabel("", JLabel.CENTER);
 	JLabel gameTime = new JLabel("", JLabel.CENTER);
 	private Border mineBorder = BorderFactory.createLineBorder(Color.RED, 1);
@@ -41,11 +41,15 @@ public class GUI extends JFrame implements ActionListener{
 	private JButton okButton = new JButton();
 	private JButton cancelButton = new JButton();
 	private JLabel messages = new JLabel("", JLabel.CENTER);
+	private JLabel nameLabel = new JLabel("", JLabel.LEFT);
+	private JLabel ipLabel = new JLabel("", JLabel.LEFT);
 	private JLabel[][] results = new JLabel[10][5];
 	private JTextField readName = new JTextField();
+	private JTextField readIP = new JTextField();
 	private String[][] leaderboard = new String[10][4];
+	private String userName;
+	private String userIP;
 	private int field_size = 10;
-	private int time;
 	private int mines = 10;
 	private int difficulity = 1;
 	private int coordinate_x;
@@ -73,11 +77,23 @@ public class GUI extends JFrame implements ActionListener{
     			}
     			
     			if(engine.isLost() == true) {
-    				JOptionPane.showMessageDialog(null, "You loose!!");
+    				JOptionPane.showMessageDialog(null, "You loose!");
+    				for(int y = 0;y < field_size;y++)
+    				{
+    					for(int x = 0;x < field_size;x++)
+    					{
+    						field[x][y].removeMouseListener(mouseListener);
+    					}
+    				}
+    				removeActionListeners();
     			}
     			
     			if(engine.isWon() == true) {
-    				JOptionPane.showMessageDialog(null, "win");
+    				JOptionPane.showMessageDialog(null, "You win!");
+    				getContentPane().removeAll();
+    				repaint();
+    				actualboard = 3;
+    				paintBoards();
     			}
     				
             }
@@ -98,7 +114,11 @@ public class GUI extends JFrame implements ActionListener{
     				}
     			}
     			if(engine.isWon() == true) {
-    				JOptionPane.showMessageDialog(null, "win");
+    				JOptionPane.showMessageDialog(null, "You win!");
+    				getContentPane().removeAll();
+    				repaint();
+    				actualboard = 3;
+    				paintBoards();
     			}
             }
         }
@@ -131,7 +151,7 @@ public class GUI extends JFrame implements ActionListener{
 				}
 				else
 				{
-					leaderboard[x][y] = "d";
+					leaderboard[x][y] = "2019/05/19 16:18:43";
 				}
 			}
 		}
@@ -153,6 +173,10 @@ public class GUI extends JFrame implements ActionListener{
 		this.actualboard = actualboard;
 	}
 	
+	public int getActualboard() {
+		return actualboard;
+	}
+
 	public int getMouseclick() {
 		return mouseclick;
 	}
@@ -168,88 +192,100 @@ public class GUI extends JFrame implements ActionListener{
 	public void setLeaderboard(String[][] leaderboard) {
 		this.leaderboard = leaderboard;
 	}
+	
+	public boolean isValid_data() {
+		return valid_data;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public String getUserIP() {
+		return userIP;
+	}
 
 	public void updateButtonAppearance()
 	{
 		field_state = engine.getState();
 		field_content = engine.getBoard();
 		
-	for (int y = 0; y < field_size; y++) {
-	for (int x = 0; x < field_size; x++) {
+		for (int y = 0; y < field_size; y++) {
+			for (int x = 0; x < field_size; x++) {
 				
-		if(field_state[x][y] == 0)
-		{
-			field[x][y].setIcon(null);
-		}
-		
-		else if(field_state[x][y] == 1)
-		{
-			field[x][y].setFont(new Font("Times New Roman", Font.BOLD, 12));
-			if(engine.isLost() == true)
-			{
-				field[x][y].setIcon(null);
+				if(field_state[x][y] == 0)
+				{
+					field[x][y].setIcon(null);
+				}
+				
+				else if(field_state[x][y] == 1)
+				{
+					field[x][y].setFont(new Font("Times New Roman", Font.BOLD, 12));
+					if(engine.isLost() == true)
+					{
+						field[x][y].setIcon(null);
+					}
+					switch (field_content[x][y])
+					{
+						case 0: 
+							field[x][y].setBackground(Color.white);
+						break;
+						case 1: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(Color.blue);
+							field[x][y].setText("1");
+						break;
+						case 2: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(Color.green);
+							field[x][y].setText("2");
+						break;
+						case 3: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(Color.orange);
+							field[x][y].setText("3");
+						break;
+						case 4: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(new Color(0,0,128));
+							field[x][y].setText("4");
+						break;
+						case 5: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(new Color(178,34,34));
+							field[x][y].setText("5");
+						break;
+						case 6: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(new Color(72,209,204));
+							field[x][y].setText("6");
+						break;
+						case 7: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(Color.black);
+							field[x][y].setText("7");
+						break;
+						case 8: 
+							field[x][y].setBackground(Color.white);
+							field[x][y].setForeground(Color.darkGray);
+							field[x][y].setText("8");
+						break;
+						default:
+							field[x][y].setBackground(Color.red);
+							field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/mine.png")));
+						break;
+					}
+				}
+				
+				else if(field_state[x][y] == 2)
+				{
+					field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/flag.png")));
+				}
 			}
-			switch (field_content[x][y])
-			{
-				case 0: 
-					field[x][y].setBackground(Color.white);
-				break;
-				case 1: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(Color.blue);
-					field[x][y].setText("1");
-				break;
-				case 2: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(Color.green);
-					field[x][y].setText("2");
-				break;
-				case 3: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(Color.orange);
-					field[x][y].setText("3");
-				break;
-				case 4: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(new Color(0,0,128));
-					field[x][y].setText("4");
-				break;
-				case 5: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(new Color(178,34,34));
-					field[x][y].setText("5");
-				break;
-				case 6: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(new Color(72,209,204));
-					field[x][y].setText("6");
-				break;
-				case 7: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(Color.black);
-					field[x][y].setText("7");
-				break;
-				case 8: 
-					field[x][y].setBackground(Color.white);
-					field[x][y].setForeground(Color.darkGray);
-					field[x][y].setText("8");
-				break;
-				default:
-					field[x][y].setBackground(Color.red);
-					field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/mine.png")));
-				break;
-			}
 		}
-		
-		else if(field_state[x][y] == 2)
-		{
-			field[x][y].setIcon(new ImageIcon(GUI.class.getResource("/icons/flag.png")));
-		}
-	}
-	}
 	
-	mines = engine.getMinesRemaining();
-	mineCounter.setText(Integer.toString(mines));
+		mines = engine.getMinesRemaining();
+		mineCounter.setText(Integer.toString(mines));
 	}
 
 	public void paintGameBoard()
@@ -288,10 +324,6 @@ public class GUI extends JFrame implements ActionListener{
 		if(init_state == true)
 		{
 			gameTime.setText("0");
-		}
-		else
-		{
-			
 		}
 		getContentPane().add(gameTime);
 		
@@ -370,18 +402,30 @@ public class GUI extends JFrame implements ActionListener{
 	
 	public void readUserName()
 	{
-		messages.setBounds(20, 10, 235, 40);
-		messages.setText("<html>You win!<br/>Give your name to get to the leaderboard!</html>");
+		messages.setBounds(20, 10, 350, 40);
+		messages.setFont(new Font("Times New Roman", Font.BOLD, 13));
+		messages.setText("Give your name and your IP address to get to the leaderboard!");
 		getContentPane().add(messages);
 		
-		readName.setBounds(20, 60, 235, 20);
+		nameLabel.setBounds(20, 60, 50, 25);
+		nameLabel.setText("Name:");
+		getContentPane().add(nameLabel);
+		
+		readName.setBounds(70, 60, 300, 25);
 		getContentPane().add(readName);
 		
-		okButton.setBounds(20, 100, 80, 30);
+		ipLabel.setBounds(20, 110, 50, 25);
+		ipLabel.setText("IP:");
+		getContentPane().add(ipLabel);
+		
+		readIP.setBounds(70, 110, 300, 25);
+		getContentPane().add(readIP);
+		
+		okButton.setBounds(70, 180, 80, 30);
 		okButton.setText("OK");
 		getContentPane().add(okButton);
 		
-		cancelButton.setBounds(175, 100, 80, 30);
+		cancelButton.setBounds(240, 180, 80, 30);
 		cancelButton.setText("Cancel");
 		getContentPane().add(cancelButton);
 	}
@@ -459,7 +503,7 @@ public class GUI extends JFrame implements ActionListener{
 		else if(actualboard == 3)
 		{
 			readUserName();
-			setSize(300,200);
+			setSize(400,280);
 			setVisible(true);
 		}
 		else
@@ -478,6 +522,12 @@ public class GUI extends JFrame implements ActionListener{
 		okButton.addActionListener(this);
 		cancelButton.addActionListener(this);
 	}
+	
+	public void removeActionListeners()
+	{
+		leaderBoard.removeActionListener(this);
+		settings.removeActionListener(this);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
@@ -495,6 +545,8 @@ public class GUI extends JFrame implements ActionListener{
 			repaint();
 			engine.setNewgame(true);
 			engine.readClickMeaning();
+			leaderBoard.addActionListener(this);
+			settings.addActionListener(this);
 		}
 		else if(event.getSource().equals(leaderBoard))
 		{
@@ -518,9 +570,26 @@ public class GUI extends JFrame implements ActionListener{
 				}
 				init_state = true;
 			}
+			
+			if(actualboard == 3)
+			{
+				try
+				{
+					userName = readName.getText();
+					userIP = readIP.getText();
+				}
+				catch (NullPointerException npe)
+				{
+					System.out.print("Invalid name or IP!");
+					valid_data = false;
+				}
+			}
 			engine.setOkbutton(true);
 			engine.readClickMeaning();
 			init_state = false;
+			valid_data = true;
+			readName.setText("");
+			readIP.setText("");		
 		}
 		else if(event.getSource().equals(cancelButton))
 		{
@@ -528,6 +597,17 @@ public class GUI extends JFrame implements ActionListener{
 			repaint();
 			engine.setCancelbutton(true);
 			engine.readClickMeaning();
+			if(engine.isWon() == true)
+			{
+				for(int y = 0;y < field_size;y++)
+				{
+					for(int x = 0;x < field_size;x++)
+					{
+						field[x][y].removeMouseListener(mouseListener);
+					}
+				}
+				removeActionListeners();
+			}
 		}
 	}
 	
