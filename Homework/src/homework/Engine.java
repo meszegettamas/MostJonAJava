@@ -243,8 +243,8 @@ public class Engine {
 		
 		if(leaderboard == true)
 		{
-			//getResults("152.66.152.97");
-			//gui.setLeaderboard(results.returnTableAsStringArray());
+			getUpdatedResults(gui.getUserIP());
+			gui.setLeaderboard(results.returnTableAsStringArray());
 			gui.setActualboard(4);
 			gui.paintBoards();
 			leaderboard = false;
