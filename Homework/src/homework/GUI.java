@@ -78,6 +78,7 @@ public class GUI extends JFrame implements ActionListener{
     			
     			if(engine.isLost() == true) {
     				
+    				JOptionPane.showMessageDialog(null, "You have lost!");
     				for(int y = 0;y < field_size;y++)
     				{
     					for(int x = 0;x < field_size;x++)
@@ -550,8 +551,11 @@ public class GUI extends JFrame implements ActionListener{
 			repaint();
 			engine.setNewgame(true);
 			engine.readClickMeaning();
-			leaderBoard.addActionListener(this);
-			settings.addActionListener(this);
+			if(leaderBoard.getActionListeners().length == 0)
+			{
+				leaderBoard.addActionListener(this);
+				settings.addActionListener(this);
+			}
 		}
 		else if(event.getSource().equals(leaderBoard))
 		{
