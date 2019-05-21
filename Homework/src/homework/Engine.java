@@ -37,7 +37,7 @@ public class Engine {
 	    	if(lost == false && won == false)
 	    	{
 		    	timeToWin++;
-		    	gui.gameTime.setText(Integer.toString(timeToWin));
+		    	gui.setGameTime(timeToWin);
 	    	}
 	    }
 	};	
@@ -197,7 +197,7 @@ public class Engine {
 			if(gui.getActualboard() == 2)
 			{
 				newgame = true;
-				level = gui.getDifficulity();
+				level = gui.getDifficulty();
 				level();
 				reset();
 			}
@@ -209,14 +209,14 @@ public class Engine {
 					// Adatok elküldése a szervernek.
 					// gui.getUserIp()-val lehet elkérni az IP címet.
 					newgame = true;
-					level = gui.getDifficulity();
+					level = gui.getDifficulty();
 					level();
 					reset();
 				}
 				else
 				{
 					newgame = true;
-					level = gui.getDifficulity();
+					level = gui.getDifficulty();
 					level();
 					reset();
 				}
@@ -434,7 +434,7 @@ public class Engine {
 			reset = false;
 			newgame = false;
 			timeToWin = 0;
-			gui.gameTime.setText(Integer.toString(timeToWin));
+			gui.setGameTime(timeToWin);
 			timer.cancel();
 			timer = new Timer();
 			timerTask = new TimerTask() {
@@ -443,7 +443,7 @@ public class Engine {
 			    	if(lost == false && won == false)
 			    	{
 				    	timeToWin++;
-				    	gui.gameTime.setText(Integer.toString(timeToWin));
+				    	gui.setGameTime(timeToWin);
 			    	}
 			    }
 			};

@@ -25,18 +25,17 @@ public class GUI extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 	
 	private Engine engine;
-	private int actualboard = 1;
 	private boolean init_state = true;
 	private boolean valid_data = true;
 	private JLabel mineCounter = new JLabel("", JLabel.CENTER);
-	JLabel gameTime = new JLabel("", JLabel.CENTER);
+	private JLabel gameTime = new JLabel("", JLabel.CENTER);
 	private Border mineBorder = BorderFactory.createLineBorder(Color.RED, 1);
 	private Border timeBorder = BorderFactory.createLineBorder(Color.BLUE, 1);
 	private JButton settings = new JButton();
 	private JButton newGame = new JButton();
 	private JButton leaderBoard = new JButton();
 	private JButton[][] field = new JButton[22][22];
-	private JRadioButton[] difficulities = new JRadioButton[3];
+	private JRadioButton[] difficulties = new JRadioButton[3];
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private JButton okButton = new JButton();
 	private JButton cancelButton = new JButton();
@@ -49,9 +48,10 @@ public class GUI extends JFrame implements ActionListener{
 	private String[][] leaderboard = new String[10][4];
 	private String userName;
 	private String userIP;
+	private int actualboard = 1;
 	private int field_size = 10;
 	private int mines = 10;
-	private int difficulity = 1;
+	private int difficulty = 1;
 	private int coordinate_x;
 	private int coordinate_y;
 	private int[][] field_state = new int[22][22];
@@ -77,7 +77,6 @@ public class GUI extends JFrame implements ActionListener{
     			}
     			
     			if(engine.isLost() == true) {
-    				JOptionPane.showMessageDialog(null, "You loose!");
     				for(int y = 0;y < field_size;y++)
     				{
     					for(int x = 0;x < field_size;x++)
@@ -86,6 +85,7 @@ public class GUI extends JFrame implements ActionListener{
     					}
     				}
     				removeActionListeners();
+    				JOptionPane.showMessageDialog(null, "You loose!");
     			}
     			
     			if(engine.isWon() == true) {
@@ -181,8 +181,8 @@ public class GUI extends JFrame implements ActionListener{
 		return mouseclick;
 	}
 
-	public int getDifficulity() {
-		return difficulity;
+	public int getDifficulty() {
+		return difficulty;
 	}
 	
 	public void setField_size(int field_size) {
@@ -205,6 +205,11 @@ public class GUI extends JFrame implements ActionListener{
 		return userIP;
 	}
 
+	public void setGameTime(int time)
+	{
+		gameTime.setText(Integer.toString(time));
+	}
+	
 	public void updateButtonAppearance()
 	{
 		field_state = engine.getState();
@@ -296,11 +301,11 @@ public class GUI extends JFrame implements ActionListener{
 		mineCounter.setBorder(mineBorder);
 		if(init_state == true)
 		{
-			if(difficulity == 1)
+			if(difficulty == 1)
 			{
 				mines = 10;
 			}
-			else if(difficulity == 2)
+			else if(difficulty == 2)
 			{
 				mines = 40;
 			}
@@ -369,26 +374,26 @@ public class GUI extends JFrame implements ActionListener{
 		
 		for(int i = 0;i < 3;i++)
 		{
-			difficulities[i] = new JRadioButton();
-			buttonGroup.add(difficulities[i]);
+			difficulties[i] = new JRadioButton();
+			buttonGroup.add(difficulties[i]);
 			if(i == 0)
 			{
-				difficulities[i].setBounds(115, 50, 55, 20);
-				difficulities[i].setText("Easy");
-				difficulities[i].doClick();
+				difficulties[i].setBounds(115, 50, 55, 20);
+				difficulties[i].setText("Easy");
+				difficulties[i].doClick();
 				
 			}
 			else if(i == 1)
 			{
-				difficulities[i].setBounds(115, 100, 70, 20);
-				difficulities[i].setText("Medium");
+				difficulties[i].setBounds(115, 100, 70, 20);
+				difficulties[i].setText("Medium");
 			}
 			else
 			{
-				difficulities[i].setBounds(115, 150, 52, 20);
-				difficulities[i].setText("Hard");
+				difficulties[i].setBounds(115, 150, 52, 20);
+				difficulties[i].setText("Hard");
 			}
-			getContentPane().add(difficulities[i]);
+			getContentPane().add(difficulties[i]);
 		}
 		
 		okButton.setBounds(50, 200, 80, 30);
@@ -563,9 +568,9 @@ public class GUI extends JFrame implements ActionListener{
 			{
 				for(int i = 0;i < 3;i++)
 				{
-					if(difficulities[i].isSelected() == true)
+					if(difficulties[i].isSelected() == true)
 					{
-						difficulity = i+1;
+						difficulty = i+1;
 					}
 				}
 				init_state = true;
