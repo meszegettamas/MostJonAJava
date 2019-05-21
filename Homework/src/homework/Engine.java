@@ -205,7 +205,7 @@ public class Engine {
 			{
 				if(gui.isValid_data() == true)
 				{
-					win(gui.getUserName());
+					win(gui.getUserName(), gui.getUserIP());
 					// Adatok elküldése a szervernek.
 					// gui.getUserIp()-val lehet elkérni az IP címet.
 					newgame = true;
@@ -243,8 +243,8 @@ public class Engine {
 		
 		if(leaderboard == true)
 		{
-			//getResults("152.66.152.97");
-			//gui.setLeaderboard(results.returnTableAsStringArray());
+			getResults(gui.getUserIP());
+			gui.setLeaderboard(results.returnTableAsStringArray());
 			gui.setActualboard(4);
 			gui.paintBoards();
 			leaderboard = false;
@@ -417,9 +417,12 @@ public class Engine {
 	}
 	
 	//fgv, ha a user nyert es megadja az adatait
-	public void win (String name) {
+	public void win (String name, String IP) {
 		Date date = new Date();
-		this.newRecord = new Record(name, date, this.timeToWin, this.level);	
+		this.newRecord = new Record(name, date, this.timeToWin, this.level);
+		Client client = new Client(IP);
+		this.results  = client.getUpdatedResults(this.newRecord);
+		
 	}
 	
 	public void reset() {

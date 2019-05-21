@@ -50,10 +50,10 @@ public class MainClient {
 			table.printBestRecords();
 			
 			
-			System.out.print("SecondClient");
-			Client client2 = new Client(ip,port);
-			TableOfRecords table2 = client2.getResults();
-			table2.printBestRecords();
+//			System.out.print("SecondClient");
+//			Client client2 = new Client(ip,port);
+//			TableOfRecords table2 = client2.getResults();
+//			table2.printBestRecords();
 			
 			
 			}catch(Exception e) {
@@ -65,7 +65,7 @@ public class MainClient {
 					
 					// ez a harom sor kell
 					Client client = new Client(ipAd);
-					TableOfRecords table = client.getUpdatedResults(record);
+					TableOfRecords table = client.getResults();
 					table.printBestRecords();
 					
 					

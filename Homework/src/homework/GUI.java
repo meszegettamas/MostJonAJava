@@ -77,6 +77,7 @@ public class GUI extends JFrame implements ActionListener{
     			}
     			
     			if(engine.isLost() == true) {
+    				
     				for(int y = 0;y < field_size;y++)
     				{
     					for(int x = 0;x < field_size;x++)
@@ -85,11 +86,10 @@ public class GUI extends JFrame implements ActionListener{
     					}
     				}
     				removeActionListeners();
-    				JOptionPane.showMessageDialog(null, "You loose!");
     			}
     			
     			if(engine.isWon() == true) {
-    				JOptionPane.showMessageDialog(null, "You win!");
+    				JOptionPane.showMessageDialog(null, "You have won!");
     				getContentPane().removeAll();
     				repaint();
     				actualboard = 3;
@@ -114,7 +114,7 @@ public class GUI extends JFrame implements ActionListener{
     				}
     			}
     			if(engine.isWon() == true) {
-    				JOptionPane.showMessageDialog(null, "You win!");
+    				JOptionPane.showMessageDialog(null, "You have won!");
     				getContentPane().removeAll();
     				repaint();
     				actualboard = 3;
@@ -477,7 +477,7 @@ public class GUI extends JFrame implements ActionListener{
 				else
 				{
 					results[x][y] = new JLabel("", Label.RIGHT);
-					results[x][y].setBounds(450, x*30 + 50, 150, 30);
+					results[x][y].setBounds(450, x*30 + 50, 200, 30);
 					results[x][y].setText(leaderboard[x][y-1]);
 					getContentPane().add(results[x][y]);
 				}
@@ -514,7 +514,7 @@ public class GUI extends JFrame implements ActionListener{
 		else
 		{
 			listResults();
-			setSize(600,480);
+			setSize(700,480);
 			setVisible(true);
 		}
 	}

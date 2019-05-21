@@ -39,7 +39,10 @@ public class Client {
             InetAddress ip = InetAddress.getByName("localhost"); 
       
             // establish the connection with server port 5056 
-            Socket s = new Socket(this.ip, this.portNumber); 
+  //          Socket s = new Socket(this.ip, this.portNumber); 
+            int connection_time_out = 5000;
+            Socket s=new Socket();   
+            s.connect(new InetSocketAddress(this.ip,this.portNumber),connection_time_out); 
 
             // obtaining input and out streams 
             ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
@@ -100,7 +103,11 @@ public class Client {
  //           InetAddress ip = InetAddress.getByName("localhost"); 
       
             // establish the connection with server port 5056 
-            Socket s = new Socket(this.ip, this.portNumber); 
+ //           Socket s = new Socket(this.ip, this.portNumber);
+            
+            int connection_time_out = 5000;
+            Socket s=new Socket();   
+            s.connect(new InetSocketAddress(this.ip,this.portNumber),connection_time_out); 
 
             // obtaining input and out streams 
             ObjectOutputStream oos = new ObjectOutputStream(s.getOutputStream());
