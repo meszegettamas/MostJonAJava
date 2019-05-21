@@ -133,7 +133,7 @@ public class GUI extends JFrame implements ActionListener{
 		paintBoards();
 		addActionListeners();
 		init_state = false;
-		for(int x = 0;x < 10;x++)
+		/*for(int x = 0;x < 10;x++)
 		{
 			for(int y = 0;y < 4;y++)
 			{
@@ -154,7 +154,7 @@ public class GUI extends JFrame implements ActionListener{
 					leaderboard[x][y] = "2019/05/19 16:18:43";
 				}
 			}
-		}
+		}*/
 	}
 	
 	public int getCoordinate_x() {
